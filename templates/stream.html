@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Webcam Stream</title>
+
+    <style>
+      #container_left {
+        margin: 0px auto;
+        width: 500px;
+        height: 375px;
+        border: 10px #333 solid;
+        float: left;
+      }
+      #container_right {
+        float: center;
+      }
+      #videoElement {
+        width: 500px;
+        height: 375px;
+        background-color: #666;
+      }
+      .wrapper {
+        text-align: center;
+        font-size: 0;
+      }
+
+      .wrapper > div {
+        display: inline-block;
+        text-align: left;
+        vertical-align: top;
+        font-size: 16px;
+      }
+      .face-box {
+        box-shadow: 0 0 2px #3388dd, 0 0 2px #3388dd, 0 0 2px #3388dd,
+          0 0 2px #3388dd, inset 0 0 2px #3388dd, inset 0 0 2px #3388dd,
+          inset 0 0 2px #3388dd, inset 0 0 2px #3388dd;
+        transition: all 0.25s ease;
+        border-color: #fff !important;
+        opacity: 1 !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Rekognition on Webcam</h1>
+    <h3 class="mt-5">Live Streaming</h3>
+    <div class="wrapper">
+      <div id="container_left">
+        <img src="/video_feed" width="100%" id="img" />
+      </div>
+      <div id="container_right">
+        <pre id="json"></pre>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // $("#json").load("/face_detail");
+        // refresh();
+
+        setInterval(function () {
+          $.ajax({
+            type: "GET",
+            url: "/face_detail",
+            datatype: "JSON",
+          }).done(function (data) {
+            console.log(data);
+            data = JSON.parse(data);
+            document.getElementById("json").innerHTML = JSON.stringify(
+              data,
+              undefined,
+              2
+            );
+          });
+        }, 3000);
+      });
+      // face_box = document.getElementById("face-box")
+      // face_box.style.top = (face_detail[0]["BoundingBox"]["Top"]*100).toFixed(2)+"%"
+      // face_box.style.left = (face_detail[0]["BoundingBox"]["Left"]*100).toFixed(2)+"%"
+      // face_box.style.height = (face_detail[0]["BoundingBox"]["Height"]*100).toFixed(2)+"%"
+      // face_box.style.width = (face_detail[0]["BoundingBox"]["Width"]*100).toFixed(2)+"%"
+    </script>
+  </body>
+</html>
